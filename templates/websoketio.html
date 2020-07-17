@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<input type="button" onclick="aaa()" value="aaa"/>
+
+<script type="text/javascript">
+         function aaa()
+         {
+            if ("WebSocket" in window) {
+                alert("您的浏览器支持 WebSocket!");
+                websocket = new WebSocket('ws://127.0.0.1:5000/testnamespace');
+                websocket.onopen = function(){
+                  alert('建立websocket连接');
+                  websocket.send("发送数据1");
+                  websocket.send("发送数据2");
+                  websocket.send("发送数据3");
+                }
+
+                websocket.onerror = function(){
+                  alert('WebSocket连接发生错误');
+                }
+                websocket.onmessage = function(event){
+                  if(typeof event.data === String) {
+                    console.log("Received data string");
+                  }
+
+                  if(event.data instanceof ArrayBuffer){
+                    var buffer = event.data;
+                    console.log("Received arraybuffer");
+                  }
+                }
+
+            }
+            else
+            {
+               // 浏览器不支持 WebSocket
+               alert("您的浏览器不支持 WebSocket!");
+            }
+         }
+      </script>
+<script src="socket.io.js"></script>
+</body>
+</html>
